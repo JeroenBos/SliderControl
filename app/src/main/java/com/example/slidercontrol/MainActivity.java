@@ -1,5 +1,6 @@
 package com.example.slidercontrol;
 
+import androidx.annotation.MainThread;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.view.View;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -29,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+        }
 //        Intent mode = new Intent("com.oem.intent.action.THREE_KEY_MODE");
         FileSystem fs = FileSystems.getDefault();
         Path path = fs.getPath("/sys/class/switch/tri-state-key/state");
@@ -97,4 +102,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void exit(View view) {
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("EXIT", true);
+        startActivity(intent);
+    }
 }

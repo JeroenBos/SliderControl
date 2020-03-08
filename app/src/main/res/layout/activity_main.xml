@@ -16,4 +16,9 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+    <Button android:text="exit"
+            android:onClick="exit"
+            android:layout_height="30pt"
+            android:layout_width="100pt" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

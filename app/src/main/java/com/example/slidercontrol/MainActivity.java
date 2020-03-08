@@ -19,11 +19,13 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    int i = 0;
+    Date current = new Date();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,19 +38,19 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException ex) {
             contents = ex.getClass().getSimpleName() + ": " + ex.getMessage();
         }
-        String s = Settings.Global.getString(getContentResolver(), "three_Key_mode");
         setContentView(R.layout.activity_main);
 
+        String s = Settings.Global.getString(getContentResolver(), "three_Key_mode");
 
         TextView textView = (TextView) findViewById(R.id.textview);
-        textView.setText(contents + "\n" + s);
-//        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        textView.setText(contents + "\n" + s + "\n" + String.valueOf(this.current.getTime()));
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 //        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
 
 
         ContentResolver contentResolver = getContentResolver();
         Uri setting = Settings.Global.getUriFor("three_Key_mode");
-
+        final Activity self = this;
         // Make a listener
         ContentObserver observer = new ContentObserver(new Handler()) {
             @Override
@@ -56,9 +58,27 @@ public class MainActivity extends AppCompatActivity {
                 super.onChange(selfChange);
 
                 TextView textView = (TextView) findViewById(R.id.textview);
-                i++;
-                textView.setText(String.valueOf(i));
-
+                try {
+                    int orientation;
+                    switch (Settings.Global.getInt(getContentResolver(), "three_Key_mode")) {
+                        case 1:
+                            orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
+                            break;
+                        case 2:
+                            orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+                            break;
+                        case 3:
+                            orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+                            break;
+                        default:
+                            return;
+                    }
+                    textView.setText(textView.getText() + String.valueOf(orientation));
+                    self.setRequestedOrientation(orientation);
+                    // self.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+                } catch (Settings.SettingNotFoundException e) {
+                    textView.setText("Setting not found");
+                }
 
             }
 
@@ -77,10 +97,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        String s = Settings.Global.getString(getContentResolver(), "three_Key_mode");
-        setContentView(R.layout.activity_main);
-
-    }
 }

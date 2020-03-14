@@ -45,11 +45,21 @@ public class MainActivity extends AppCompatActivity {
             contents = ex.getClass().getSimpleName() + ": " + ex.getMessage();
         }
         setContentView(R.layout.activity_main);
+//        String s = "";
+//        try {
+//            Settings.System.putInt(getContentResolver(), "user_rotation", 1);
+//        } catch (Exception e) {
+//            s += e.getClass().getSimpleName() + " " + e.getMessage();
+//
+//        }
+//        //String s = Settings.Global.getString(getContentResolver(), "USER_ROTATION");
+//        s += "\nUSER_ROTATION: " + Settings.System.getString(getContentResolver(), "user_rotation");
 
-        String s = Settings.Global.getString(getContentResolver(), "three_Key_mode");
 
-        TextView textView = (TextView) findViewById(R.id.textview);
-        textView.setText(contents + "\n" + s + "\n" + String.valueOf(this.current.getTime()));
+      //   TextView textView = (TextView) findViewById(R.id.textview);
+        // textView.setText(contents + "\n" + s + "\n" + String.valueOf(this.current.getTime()));
+
+
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 //        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
 
@@ -68,13 +78,13 @@ public class MainActivity extends AppCompatActivity {
                     int rotation;
                     switch (Settings.Global.getInt(getContentResolver(), "three_Key_mode")) {
                         case 1:
-                            rotation= Surface.ROTATION_0;
+                            rotation = Surface.ROTATION_0;
                             break;
                         case 2:
-                            rotation= Surface.ROTATION_270;
+                            rotation = Surface.ROTATION_270;
                             break;
                         case 3:
-                            rotation= Surface.ROTATION_90;
+                            rotation = Surface.ROTATION_90;
                             break;
                         default:
                             return;

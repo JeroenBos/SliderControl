@@ -2,14 +2,17 @@ package com.example.slidercontrol;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.ContentObserver;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
@@ -29,11 +32,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        addHomeScreenShortcut();
+
         createOverlayView();
 
         registerThreeKeyModeListener();
 
         readAndRotate();
+    }
+
+    void addHomeScreenShortcut() {
+//        if (!getSharedPreferences("APP_PREFERENCE", Activity.MODE_PRIVATE).getBoolean("IS_ICON_CREATED", false)) {
+
+            Intent intentShortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+            intentShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.app_name));
+            Parcelable appicon = Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.drawable.ic_launcher_foreground);
+            intentShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appicon);
+            intentShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, new Intent(getApplicationContext(), MainActivity.class));
+            intentShortcut.putExtra("duplicate", false);
+            sendBroadcast(intentShortcut);
+
+
+            getSharedPreferences("APP_PREFERENCE", Activity.MODE_PRIVATE).edit().putBoolean("IS_ICON_CREATED", true).apply();
+//        }
     }
 
     void createOverlayView() {

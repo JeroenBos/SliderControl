@@ -71,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
         orientationChanger.setVisibility(View.VISIBLE);
     }
 
+    void setRotation(int rotation) {
+
+        orientationLayout.screenOrientation = rotation;
+        wm.updateViewLayout(orientationChanger, orientationLayout);
+    }
+
     void n() {
 
         if (getIntent().getBooleanExtra("EXIT", false)) {
@@ -136,8 +142,7 @@ public class MainActivity extends AppCompatActivity {
                         textView.setText(textView.getText() + "\n" + String.valueOf(rotation));
                     }
 
-                    orientationLayout.screenOrientation = rotation;
-                    wm.updateViewLayout(orientationChanger, orientationLayout);
+                    setRotation(rotation);
 
                 } catch (Settings.SettingNotFoundException e) {
                     if (textView != null) {

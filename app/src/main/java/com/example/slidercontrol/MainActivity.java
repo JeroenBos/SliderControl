@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         createOverlayView();
 
         registerThreeKeyModeListener();
+
+        readAndRotate();
     }
 
     void createOverlayView() {

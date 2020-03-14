@@ -5,7 +5,8 @@
 
     <dist:module dist:instant="true" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- SYSTEM_ALERT_WINDOW allows to draw over other apps    -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"></uses-permission>
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -13,7 +14,9 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <receiver android:enabled="true" android:name=".BootUpReceiver"
+        <receiver
+                android:name=".BootUpReceiver"
+                android:enabled="true"
                 android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

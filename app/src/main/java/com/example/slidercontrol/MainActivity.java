@@ -4,17 +4,21 @@ import androidx.annotation.MainThread;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.ContentObserver;
+import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.view.Surface;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -29,9 +33,29 @@ public class MainActivity extends AppCompatActivity {
 
     Date current = new Date();
 
+    LinearLayout orientationChanger;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        orientationChanger = new LinearLayout(this);
+        
+// Using TYPE_SYSTEM_OVERLAY is crucial to make your window appear on top
+// You'll need the permission android.permission.SYSTEM_ALERT_WINDOW
+        WindowManager.LayoutParams orientationLayout = new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.RGBA_8888);
+// Use whatever constant you need for your desired rotation
+        orientationLayout.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+
+        WindowManager wm = (WindowManager) this.getSystemService(Service.WINDOW_SERVICE);
+        wm.addView(orientationChanger, orientationLayout);
+        orientationChanger.setVisibility(View.VISIBLE);
+
+    }
+
+    void n() {
+
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
         }
@@ -56,11 +80,11 @@ public class MainActivity extends AppCompatActivity {
 //        s += "\nUSER_ROTATION: " + Settings.System.getString(getContentResolver(), "user_rotation");
 
 
-      //   TextView textView = (TextView) findViewById(R.id.textview);
+        //   TextView textView = (TextView) findViewById(R.id.textview);
         // textView.setText(contents + "\n" + s + "\n" + String.valueOf(this.current.getTime()));
 
 
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        //  this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 //        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
 
 
@@ -89,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                         default:
                             return;
                     }
-                    textView.setText(textView.getText() + String.valueOf(rotation));
+                    textView.setText(textView.getText() + "\n" + String.valueOf(rotation));
                     // Ensure Android screen auto-rotation is disabled
                     Settings.System.putInt(
                             getContentResolver(),

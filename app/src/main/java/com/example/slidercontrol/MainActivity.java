@@ -63,11 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
         wm = (WindowManager) this.getSystemService(Service.WINDOW_SERVICE);
         wm.addView(orientationChanger, orientationLayout);
-        orientationChanger.setVisibility(View.GONE);
-
-        // Use whatever constant you need for your desired rotation
-        orientationLayout.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-        wm.updateViewLayout(orientationChanger, orientationLayout);
         orientationChanger.setVisibility(View.VISIBLE);
 
         n();

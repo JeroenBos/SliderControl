@@ -84,31 +84,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    int mapThreeKeyModeToRotation(int threeKeyMode) {
+        switch (threeKeyMode) {
+            case 1:
+                return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+            case 2:
+                return ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+            case 3:
+                return ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+            default:
+                return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        }
+    }
+
     void n() {
 
-        ContentResolver contentResolver = getContentResolver();
-        Uri setting = Settings.Global.getUriFor("three_Key_mode");
         // Make a listener
         ContentObserver observer = new ContentObserver(new Handler()) {
             @Override
             public void onChange(boolean selfChange) {
                 super.onChange(selfChange);
 
-                TextView textView = (TextView) findViewById(R.id.textview);
-                int rotation;
-                switch (readThreeKeyMode()) {
-                    case 1:
-                        rotation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-                        break;
-                    case 2:
-                        rotation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
-                        break;
-                    case 3:
-                        rotation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-                        break;
-                    default:
-                        return;
-                }
+                int threeKeyMode = readThreeKeyMode();
+                int rotation = mapThreeKeyModeToRotation(threeKeyMode);
 
                 setRotation(rotation);
             }
@@ -120,8 +118,9 @@ public class MainActivity extends AppCompatActivity {
         };
 
         // Start listening
+        ContentResolver contentResolver = getContentResolver();
+        Uri setting = Settings.Global.getUriFor("three_Key_mode");
         contentResolver.registerContentObserver(setting, false, observer);
-
     }
 
 }

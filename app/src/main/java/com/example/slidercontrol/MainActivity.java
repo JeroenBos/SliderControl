@@ -42,7 +42,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        createOverlayView();
 
+        n();
+    }
+
+    void createOverlayView() {
         orientationChanger = new LinearLayout(this);
         orientationChanger.setClickable(false);
         orientationChanger.setFocusable(false);
@@ -64,9 +69,6 @@ public class MainActivity extends AppCompatActivity {
         wm = (WindowManager) this.getSystemService(Service.WINDOW_SERVICE);
         wm.addView(orientationChanger, orientationLayout);
         orientationChanger.setVisibility(View.VISIBLE);
-
-        n();
-
     }
 
     void n() {
@@ -133,8 +135,8 @@ public class MainActivity extends AppCompatActivity {
                     if (textView != null) {
                         textView.setText(textView.getText() + "\n" + String.valueOf(rotation));
                     }
-                    orientationLayout.screenOrientation = rotation;
 
+                    orientationLayout.screenOrientation = rotation;
                     wm.updateViewLayout(orientationChanger, orientationLayout);
 
                 } catch (Settings.SettingNotFoundException e) {

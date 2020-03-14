@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.view.Surface;
 import android.view.View;
 import android.widget.TextView;
 
@@ -64,22 +65,34 @@ public class MainActivity extends AppCompatActivity {
 
                 TextView textView = (TextView) findViewById(R.id.textview);
                 try {
-                    int orientation;
+                    int rotation;
                     switch (Settings.Global.getInt(getContentResolver(), "three_Key_mode")) {
                         case 1:
-                            orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
+                            rotation= Surface.ROTATION_0;
                             break;
                         case 2:
-                            orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+                            rotation= Surface.ROTATION_270;
                             break;
                         case 3:
-                            orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+                            rotation= Surface.ROTATION_90;
                             break;
                         default:
                             return;
                     }
-                    textView.setText(textView.getText() + String.valueOf(orientation));
-                    self.setRequestedOrientation(orientation);
+                    textView.setText(textView.getText() + String.valueOf(rotation));
+                    // Ensure Android screen auto-rotation is disabled
+                    Settings.System.putInt(
+                            getContentResolver(),
+                            Settings.System.ACCELEROMETER_ROTATION,
+                            0
+                    );
+                    //
+                    Settings.System.putInt(
+                            getContentResolver(),
+                            Settings.System.USER_ROTATION,
+                            rotation //Or a different ROTATION_ constant
+                    );
+//                    self.setRequestedOrientation(orientation);
                     // self.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
                 } catch (Settings.SettingNotFoundException e) {
                     textView.setText("Setting not found");

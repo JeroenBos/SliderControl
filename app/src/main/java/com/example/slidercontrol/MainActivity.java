@@ -2,18 +2,11 @@ package com.example.slidercontrol;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.ShortcutInfo;
-import android.content.pm.ShortcutManager;
 import android.database.ContentObserver;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +15,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.LinearLayout;
+
+import java.util.function.Supplier;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -34,41 +29,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addHomeScreenShortcut();
-
         createOverlayView();
 
         registerThreeKeyModeListener();
 
         readAndRotate();
-    }
-
-    void addHomeScreenShortcut() {
-        try {
-            if (!getSharedPreferences("APP_PREFERENCE", Activity.MODE_PRIVATE).getBoolean("IS_ICON_CREATED", false)) {
-
-                Context context = getApplicationContext();
-                ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
-                if (shortcutManager.isRequestPinShortcutSupported()) {
-                    ShortcutInfo pinShortcutInfo = createShortcutInfo(this);
-                    Intent resultIntent = shortcutManager.createShortcutResultIntent(pinShortcutInfo);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, resultIntent, 0);
-                    shortcutManager.requestPinShortcut(pinShortcutInfo, pendingIntent.getIntentSender());
-                }
-
-                getSharedPreferences("APP_PREFERENCE", Activity.MODE_PRIVATE).edit().putBoolean("IS_ICON_CREATED", true).apply();
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    private ShortcutInfo createShortcutInfo(Context context) {
-        return new ShortcutInfo.Builder(context, getString(R.string.app_name))
-                .setShortLabel(getString(R.string.app_name))
-                .setLongLabel(getString(R.string.app_name))
-                .setIcon(Icon.createWithResource(context, R.drawable.ic_launcher_foreground))
-                .setIntent(new Intent(this, MainActivity.class).setAction(Intent.ACTION_VIEW))
-                .build();
     }
 
     void createOverlayView() {

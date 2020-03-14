@@ -54,11 +54,16 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                 0,
                 PixelFormat.RGBA_8888);
-// Use whatever constant you need for your desired rotation
-        orientationLayout.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+
+
 
         WindowManager wm = (WindowManager) this.getSystemService(Service.WINDOW_SERVICE);
         wm.addView(orientationChanger, orientationLayout);
+        orientationChanger.setVisibility(View.GONE);
+
+        // Use whatever constant you need for your desired rotation
+        orientationLayout.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        wm.updateViewLayout(orientationChanger, orientationLayout);
         orientationChanger.setVisibility(View.VISIBLE);
 
     }

@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         orientationChanger = new LinearLayout(this);
+        orientationChanger.setClickable(false);
+        orientationChanger.setFocusable(false);
+        orientationChanger.setFocusableInTouchMode(false);
+        orientationChanger.setLongClickable(false);
+
         
 // Using TYPE_SYSTEM_OVERLAY is crucial to make your window appear on top
 // You'll need the permission android.permission.SYSTEM_ALERT_WINDOW

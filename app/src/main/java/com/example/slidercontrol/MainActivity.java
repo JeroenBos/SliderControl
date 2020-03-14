@@ -34,19 +34,14 @@ public class MainActivity extends AppCompatActivity {
 
     Date current = new Date();
 
+    LinearLayout orientationChanger;
+    LayoutParams orientationLayout;
+    WindowManager wm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        rotate(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    }
-
-    void rotate(int screenOrientation) {
-
-        LinearLayout orientationChanger;
-        LayoutParams orientationLayout;
-        WindowManager wm;
 
         orientationChanger = new LinearLayout(this);
         orientationChanger.setClickable(false);
@@ -71,9 +66,11 @@ public class MainActivity extends AppCompatActivity {
         orientationChanger.setVisibility(View.GONE);
 
         // Use whatever constant you need for your desired rotation
-        orientationLayout.screenOrientation = screenOrientation;
+        orientationLayout.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
         wm.updateViewLayout(orientationChanger, orientationLayout);
         orientationChanger.setVisibility(View.VISIBLE);
+
+        n();
 
     }
 
@@ -104,7 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         TextView textView = (TextView) findViewById(R.id.textview);
-        textView.setText(String.valueOf(this.current.getTime()));
+        if (textView != null) {
+            textView.setText(String.valueOf(this.current.getTime()));
+        }
 
 
         //  this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -125,13 +124,13 @@ public class MainActivity extends AppCompatActivity {
                     int rotation;
                     switch (Settings.Global.getInt(getContentResolver(), "three_Key_mode")) {
                         case 1:
-                            rotation = Surface.ROTATION_0;
+                            rotation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
                             break;
                         case 2:
-                            rotation = Surface.ROTATION_270;
+                            rotation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
                             break;
                         case 3:
-                            rotation = Surface.ROTATION_90;
+                            rotation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
                             break;
                         default:
                             return;
@@ -139,7 +138,9 @@ public class MainActivity extends AppCompatActivity {
                     if (textView != null) {
                         textView.setText(textView.getText() + "\n" + String.valueOf(rotation));
                     }
-                    rotate(rotation);
+                    orientationLayout.screenOrientation = rotation;
+
+                    wm.updateViewLayout(orientationChanger, orientationLayout);
 
                 } catch (Settings.SettingNotFoundException e) {
                     if (textView != null) {

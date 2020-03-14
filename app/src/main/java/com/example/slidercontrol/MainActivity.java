@@ -34,12 +34,19 @@ public class MainActivity extends AppCompatActivity {
 
     Date current = new Date();
 
-    LinearLayout orientationChanger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        rotate(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
+
+    void rotate(int screenOrientation) {
+
+        LinearLayout orientationChanger;
+        LayoutParams orientationLayout;
+        WindowManager wm;
 
         orientationChanger = new LinearLayout(this);
         orientationChanger.setClickable(false);
@@ -50,22 +57,21 @@ public class MainActivity extends AppCompatActivity {
 
 // Using TYPE_SYSTEM_OVERLAY is crucial to make your window appear on top
 // You'll need the permission android.permission.SYSTEM_ALERT_WINDOW
-        LayoutParams orientationLayout = new LayoutParams(
+        orientationLayout = new LayoutParams(
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.TYPE_APPLICATION_OVERLAY,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.RGBA_8888);
 
 
-
-        WindowManager wm = (WindowManager) this.getSystemService(Service.WINDOW_SERVICE);
+        wm = (WindowManager) this.getSystemService(Service.WINDOW_SERVICE);
         wm.addView(orientationChanger, orientationLayout);
         orientationChanger.setVisibility(View.GONE);
 
         // Use whatever constant you need for your desired rotation
-        orientationLayout.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        orientationLayout.screenOrientation = screenOrientation;
         wm.updateViewLayout(orientationChanger, orientationLayout);
         orientationChanger.setVisibility(View.VISIBLE);
 
@@ -77,15 +83,15 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 //        Intent mode = new Intent("com.oem.intent.action.THREE_KEY_MODE");
-        FileSystem fs = FileSystems.getDefault();
-        Path path = fs.getPath("/sys/class/switch/tri-state-key/state");
-        String contents;
-        try {
-            contents = Files.readAllLines(path).get(0);
-        } catch (IOException ex) {
-            contents = ex.getClass().getSimpleName() + ": " + ex.getMessage();
-        }
-        setContentView(R.layout.activity_main);
+//        FileSystem fs = FileSystems.getDefault();
+//        Path path = fs.getPath("/sys/class/switch/tri-state-key/state");
+//        String contents;
+//        try {
+//            contents = Files.readAllLines(path).get(0);
+//        } catch (IOException ex) {
+//            contents = ex.getClass().getSimpleName() + ": " + ex.getMessage();
+//        }
+//        setContentView(R.layout.activity_main);
 //        String s = "";
 //        try {
 //            Settings.System.putInt(getContentResolver(), "user_rotation", 1);
@@ -97,8 +103,8 @@ public class MainActivity extends AppCompatActivity {
 //        s += "\nUSER_ROTATION: " + Settings.System.getString(getContentResolver(), "user_rotation");
 
 
-        //   TextView textView = (TextView) findViewById(R.id.textview);
-        // textView.setText(contents + "\n" + s + "\n" + String.valueOf(this.current.getTime()));
+        TextView textView = (TextView) findViewById(R.id.textview);
+        textView.setText(String.valueOf(this.current.getTime()));
 
 
         //  this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -130,23 +136,19 @@ public class MainActivity extends AppCompatActivity {
                         default:
                             return;
                     }
-                    textView.setText(textView.getText() + "\n" + String.valueOf(rotation));
-                    // Ensure Android screen auto-rotation is disabled
-                    Settings.System.putInt(
-                            getContentResolver(),
-                            Settings.System.ACCELEROMETER_ROTATION,
-                            0
-                    );
-                    //
-                    Settings.System.putInt(
-                            getContentResolver(),
-                            Settings.System.USER_ROTATION,
-                            rotation //Or a different ROTATION_ constant
-                    );
-//                    self.setRequestedOrientation(orientation);
-                    // self.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+                    if (textView != null) {
+                        textView.setText(textView.getText() + "\n" + String.valueOf(rotation));
+                    }
+                    rotate(rotation);
+
                 } catch (Settings.SettingNotFoundException e) {
-                    textView.setText("Setting not found");
+                    if (textView != null) {
+                        textView.setText("Setting not found");
+                    }
+                } catch (Exception e) {
+                    if (textView != null) {
+                        textView.setText(e.getClass().getSimpleName() + " " + e.getMessage());
+                    }
                 }
 
             }

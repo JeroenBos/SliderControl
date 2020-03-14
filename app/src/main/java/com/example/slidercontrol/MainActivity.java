@@ -97,6 +97,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    void readAndRotate() {
+        int threeKeyMode = readThreeKeyMode();
+        int rotation = mapThreeKeyModeToRotation(threeKeyMode);
+
+        setRotation(rotation);
+    }
+
     void registerThreeKeyModeListener() {
 
         // Make a listener
@@ -104,11 +111,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChange(boolean selfChange) {
                 super.onChange(selfChange);
-
-                int threeKeyMode = readThreeKeyMode();
-                int rotation = mapThreeKeyModeToRotation(threeKeyMode);
-
-                setRotation(rotation);
+                readAndRotate();
             }
 
             @Override

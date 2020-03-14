@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.LinearLayout;
+import java.util.function.Supplier;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -83,8 +84,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void readAndRotate() {
-        int threeKeyMode = readThreeKeyMode();
-        int rotation = mapThreeKeyModeToRotation(threeKeyMode);
+        Supplier<Integer> getRotation = () -> {
+            int threeKeyMode = readThreeKeyMode();
+            int rotation = mapThreeKeyModeToRotation(threeKeyMode);
+            return rotation;
+        };
+
+
+        int rotation = getRotation.get();
+        if (rotation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            rotation = getRotation.get();
+        }
 
         setRotation(rotation);
     }

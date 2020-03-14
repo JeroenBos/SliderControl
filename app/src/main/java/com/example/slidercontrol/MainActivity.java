@@ -1,38 +1,23 @@
 package com.example.slidercontrol;
 
-import androidx.annotation.MainThread;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Date;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-    Date current = new Date();
 
     LinearLayout orientationChanger;
     LayoutParams orientationLayout;
@@ -57,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
         orientationChanger.setLongClickable(false);
 
 
-// Using TYPE_SYSTEM_OVERLAY is crucial to make your window appear on top
-// You'll need the permission android.permission.SYSTEM_ALERT_WINDOW
         orientationLayout = new LayoutParams(
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT,

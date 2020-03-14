@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         createOverlayView();
 
-        n();
+        registerThreeKeyModeListener();
     }
 
     void createOverlayView() {
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void n() {
+    void registerThreeKeyModeListener() {
 
         // Make a listener
         ContentObserver observer = new ContentObserver(new Handler()) {

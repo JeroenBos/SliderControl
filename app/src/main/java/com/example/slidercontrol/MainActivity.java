@@ -76,9 +76,9 @@ public class MainActivity extends AppCompatActivity {
             case 1:
                 return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
             case 2:
-                return ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
-            case 3:
                 return ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+            case 3:
+                return ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
             default:
                 return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         }

@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void setRotation(int rotation) {
-
         orientationLayout.screenOrientation = rotation;
         wm.updateViewLayout(orientationChanger, orientationLayout);
     }
@@ -87,43 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
     void n() {
 
-        if (getIntent().getBooleanExtra("EXIT", false)) {
-            finish();
-        }
-//        Intent mode = new Intent("com.oem.intent.action.THREE_KEY_MODE");
-//        FileSystem fs = FileSystems.getDefault();
-//        Path path = fs.getPath("/sys/class/switch/tri-state-key/state");
-//        String contents;
-//        try {
-//            contents = Files.readAllLines(path).get(0);
-//        } catch (IOException ex) {
-//            contents = ex.getClass().getSimpleName() + ": " + ex.getMessage();
-//        }
-//        setContentView(R.layout.activity_main);
-//        String s = "";
-//        try {
-//            Settings.System.putInt(getContentResolver(), "user_rotation", 1);
-//        } catch (Exception e) {
-//            s += e.getClass().getSimpleName() + " " + e.getMessage();
-//
-//        }
-//        //String s = Settings.Global.getString(getContentResolver(), "USER_ROTATION");
-//        s += "\nUSER_ROTATION: " + Settings.System.getString(getContentResolver(), "user_rotation");
-
-
-        TextView textView = (TextView) findViewById(R.id.textview);
-        if (textView != null) {
-            textView.setText(String.valueOf(this.current.getTime()));
-        }
-
-
-        //  this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-
-
         ContentResolver contentResolver = getContentResolver();
         Uri setting = Settings.Global.getUriFor("three_Key_mode");
-        final Activity self = this;
         // Make a listener
         ContentObserver observer = new ContentObserver(new Handler()) {
             @Override
@@ -145,13 +109,8 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         return;
                 }
-                if (textView != null) {
-                    textView.setText(textView.getText() + "\n" + String.valueOf(rotation));
-                }
 
                 setRotation(rotation);
-
-
             }
 
             @Override
@@ -160,19 +119,9 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-// Start listening
-
+        // Start listening
         contentResolver.registerContentObserver(setting, false, observer);
 
-// Stop listening
-//        contentResolver.unregisterContentObserver(observer);
-
     }
 
-    public void exit(View view) {
-        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("EXIT", true);
-        startActivity(intent);
-    }
 }

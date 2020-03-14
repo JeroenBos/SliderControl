@@ -51,8 +51,11 @@ public class MainActivity extends AppCompatActivity {
 // Using TYPE_SYSTEM_OVERLAY is crucial to make your window appear on top
 // You'll need the permission android.permission.SYSTEM_ALERT_WINDOW
         LayoutParams orientationLayout = new LayoutParams(
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                0,
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.TYPE_APPLICATION_OVERLAY,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.RGBA_8888);
 
 

@@ -18,6 +18,7 @@ import android.provider.Settings;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -46,10 +47,13 @@ public class MainActivity extends AppCompatActivity {
         orientationChanger.setFocusableInTouchMode(false);
         orientationChanger.setLongClickable(false);
 
-        
+
 // Using TYPE_SYSTEM_OVERLAY is crucial to make your window appear on top
 // You'll need the permission android.permission.SYSTEM_ALERT_WINDOW
-        WindowManager.LayoutParams orientationLayout = new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.RGBA_8888);
+        LayoutParams orientationLayout = new LayoutParams(
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                0,
+                PixelFormat.RGBA_8888);
 // Use whatever constant you need for your desired rotation
         orientationLayout.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
 

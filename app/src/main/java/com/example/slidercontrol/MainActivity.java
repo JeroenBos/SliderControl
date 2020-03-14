@@ -77,6 +77,14 @@ public class MainActivity extends AppCompatActivity {
         wm.updateViewLayout(orientationChanger, orientationLayout);
     }
 
+    int readThreeKeyMode() {
+        try {
+            return Settings.Global.getInt(getContentResolver(), "three_Key_mode");
+        } catch (Settings.SettingNotFoundException e) {
+            return 0;
+        }
+    }
+
     void n() {
 
         if (getIntent().getBooleanExtra("EXIT", false)) {
@@ -123,36 +131,26 @@ public class MainActivity extends AppCompatActivity {
                 super.onChange(selfChange);
 
                 TextView textView = (TextView) findViewById(R.id.textview);
-                try {
-                    int rotation;
-                    switch (Settings.Global.getInt(getContentResolver(), "three_Key_mode")) {
-                        case 1:
-                            rotation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-                            break;
-                        case 2:
-                            rotation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
-                            break;
-                        case 3:
-                            rotation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-                            break;
-                        default:
-                            return;
-                    }
-                    if (textView != null) {
-                        textView.setText(textView.getText() + "\n" + String.valueOf(rotation));
-                    }
-
-                    setRotation(rotation);
-
-                } catch (Settings.SettingNotFoundException e) {
-                    if (textView != null) {
-                        textView.setText("Setting not found");
-                    }
-                } catch (Exception e) {
-                    if (textView != null) {
-                        textView.setText(e.getClass().getSimpleName() + " " + e.getMessage());
-                    }
+                int rotation;
+                switch (readThreeKeyMode()) {
+                    case 1:
+                        rotation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+                        break;
+                    case 2:
+                        rotation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+                        break;
+                    case 3:
+                        rotation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+                        break;
+                    default:
+                        return;
                 }
+                if (textView != null) {
+                    textView.setText(textView.getText() + "\n" + String.valueOf(rotation));
+                }
+
+                setRotation(rotation);
+
 
             }
 

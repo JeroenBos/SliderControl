@@ -1,10 +1,14 @@
 package com.example.slidercontrol;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Service;
 import android.content.ContentResolver;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.graphics.PixelFormat;
 import android.net.Uri;
@@ -29,11 +33,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // ask for permission to start the app on boot:
+        askForPermission(Manifest.permission.RECEIVE_BOOT_COMPLETED, 7654321);
+
+        // ask for permission to draw over other windows:
+        boolean hasPermission = askForPermission(Manifest.permission.SYSTEM_ALERT_WINDOW, 1234567);
+        if (!hasPermission)
+            return;
+
+
         createOverlayView();
 
         registerThreeKeyModeListener();
 
         readAndRotate();
+    }
+
+    boolean askForPermission(String permission, int uniqueRequestId) {
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{permission}, uniqueRequestId);
+
+            return ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED;
+        } else {
+            // Permission has already been granted
+            return true;
+        }
     }
 
     void createOverlayView() {

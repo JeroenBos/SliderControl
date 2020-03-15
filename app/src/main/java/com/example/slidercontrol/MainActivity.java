@@ -34,13 +34,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // ask for permission to start the app on boot:
-        askForPermission(Manifest.permission.RECEIVE_BOOT_COMPLETED, 7654321);
-
+        askForPermission(Manifest.permission.RECEIVE_BOOT_COMPLETED, 123);
         // ask for permission to draw over other windows:
-        boolean hasPermission = askForPermission(Manifest.permission.SYSTEM_ALERT_WINDOW, 1234567);
+        boolean hasPermission = askForPermission(Manifest.permission.SYSTEM_ALERT_WINDOW, 1234);
         if (!hasPermission)
             return;
-
 
         createOverlayView();
 

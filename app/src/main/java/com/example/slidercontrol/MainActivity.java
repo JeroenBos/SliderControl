@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void registerThreeKeyModeListener() {
-
         // Make a listener
         ContentObserver observer = new ContentObserver(new Handler()) {
             @Override
